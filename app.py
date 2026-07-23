@@ -1,13 +1,18 @@
-import asyncio
-from rubpy import Client
-# import requests
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 
-async def main():
-    async with Client("time_sessions") as app:
-        me = await app.get_me()
-        print("===================== API RESPONSE =================")
-        print(me)
-        print("====================================================")
+app = FastAPI()
 
-if __name__ == "__main__":
-    asyncio.run(main())
+@app.get("/")
+async def home():
+    return {"status": "running"}
+
+@app.get("/upload")
+async def upload(url: str):
+
+    print(f"Download URL: {url}")
+
+    return JSONResponse({
+        "status": "ok",
+        "url": url
+    })
