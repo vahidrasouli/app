@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -16,21 +15,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Login to GHCR
-        uses: docker/login-action@v3
+      - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/rubika-uploader:latest
-            ghcr.io/${{ github.repository_owner }}/rubika-uploader:${{ github.sha }}
+      - name: Build Image
+        run: docker build -t rubika-uploader .
+
+      - name: Run App
+        run: docker run --rm rubika-uploader
+
+      - name: Tag Image
+        run: |
+          docker tag rubika-uploader ghcr.io/${{ github.repository_owner }}/rubika-uploader:latest
+
+      - name: Push Image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/rubika-uploader:latest
