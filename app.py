@@ -1,6 +1,6 @@
 import asyncio
 from rubpy import Client
-import requests
+# import requests
 
 async def main():
     async with Client("time_sessions") as app:
