@@ -26,9 +26,6 @@ jobs:
       - name: Build Image
         run: docker build -t rubika-uploader .
 
-      - name: Run App
-        run: docker run --rm rubika-uploader
-
       - name: Tag Image
         run: |
           docker tag rubika-uploader ghcr.io/${{ github.repository_owner }}/rubika-uploader:latest
