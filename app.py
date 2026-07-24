@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from downloader import download_file
 from logger import logger
 from config import APP_NAME, APP_VERSION
+from files import list_files
 
 
 # ----------------------------------
@@ -126,6 +127,15 @@ async def upload(url: str):
 
     return result
 
+# ----------------------------------
+# List Files
+# ----------------------------------
+
+@app.get("/files")
+
+async def files():
+
+    return list_files()
 
 # ----------------------------------
 # HTTP Exception
