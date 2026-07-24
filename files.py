@@ -1,4 +1,5 @@
 from pathlib import Path
+from fastapi import HTTPException
 from datetime import datetime
 
 from config import DOWNLOAD_DIR
@@ -77,12 +78,13 @@ def delete_file(filename: str):
     file = Path(DOWNLOAD_DIR) / filename
 
     if not file.exists():
-        return {
-            "status": "error",
-            "message": "file not found"
-        }
 
-    os.remove(file)
+        raise HTTPException(
+            status_code=404,
+            detail="File not found"
+        )
+
+    file.unlink()
 
     return {
         "status": "deleted",

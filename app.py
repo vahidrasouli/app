@@ -4,6 +4,7 @@ import time
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 
+from rubika.client import get_client
 from downloader import download_file
 from logger import logger
 from config import APP_NAME, APP_VERSION
@@ -153,10 +154,10 @@ async def file_info(filename: str):
 
     if file is None:
 
-        return {
-            "status": "error",
-            "message": "file not found"
-        }
+        raise HTTPException(
+            status_code=404,
+            detail="File not found"
+    )
 
     return file
 
@@ -193,6 +194,23 @@ async def version():
             "/files"
         ]
     }
+
+# ----------------------------------
+# Rubika Test
+# ----------------------------------
+
+@app.get("/rubika/test")
+async def rubika_test():
+
+    async with get_client() as app:
+
+        me = await app.get_me()
+
+        return {
+            "status": "connected",
+            "guid": me.user_guid,
+            "name": me.first_name
+        }
 
 # ----------------------------------
 # HTTP Exception
