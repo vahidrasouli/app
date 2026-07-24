@@ -114,7 +114,7 @@ async def download_file(url: str):
 
                 downloaded = 0
 
-                with open(filepath, "wb") as f:
+                with open(filepath, "xb") as f:
 
                     async for chunk in response.content.iter_chunked(
                         CHUNK_SIZE

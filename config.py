@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 # ------------------------
 # Application
@@ -11,7 +12,7 @@ APP_VERSION = "1.0.0"
 # Download
 # ------------------------
 
-DOWNLOAD_DIR = "/tmp"
+DOWNLOAD_DIR = tempfile.gettempdir()
 
 CHUNK_SIZE = 1024 * 1024  # 1MB
 
