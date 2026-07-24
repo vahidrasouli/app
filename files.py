@@ -52,3 +52,70 @@ def list_files():
         "files": files
 
     }
+
+
+def get_file(filename: str):
+
+    file = Path(DOWNLOAD_DIR) / filename
+
+    if not file.exists() or not file.is_file():
+        return None
+
+    stat = file.stat()
+
+    return {
+        "filename": file.name,
+        "size": stat.st_size,
+        "path": str(file),
+        "created": stat.st_ctime,
+        "modified": stat.st_mtime
+    }
+
+
+def delete_file(filename: str):
+
+    file = Path(DOWNLOAD_DIR) / filename
+
+    if not file.exists():
+        return {
+            "status": "error",
+            "message": "file not found"
+        }
+
+    os.remove(file)
+
+    return {
+        "status": "deleted",
+        "filename": filename
+    }
+
+
+def delete_all_files():
+
+    directory = Path(DOWNLOAD_DIR)
+
+    deleted = []
+
+    if not directory.exists():
+
+        return {
+            "deleted": 0,
+            "files": []
+        }
+
+    for file in directory.iterdir():
+
+        if not file.is_file():
+            continue
+
+        deleted.append(file.name)
+
+        file.unlink()
+
+    return {
+
+        "deleted": len(deleted),
+
+        "files": deleted
+
+    }

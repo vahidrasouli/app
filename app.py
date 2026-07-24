@@ -7,7 +7,12 @@ from fastapi.responses import JSONResponse
 from downloader import download_file
 from logger import logger
 from config import APP_NAME, APP_VERSION
-from files import list_files
+from files import (
+    list_files,
+    get_file,
+    delete_file,
+    delete_all_files
+)
 
 
 # ----------------------------------
@@ -136,6 +141,42 @@ async def upload(url: str):
 async def files():
 
     return list_files()
+
+# ----------------------------------
+# Details Files
+# ----------------------------------
+@app.get("/files/{filename}")
+
+async def file_info(filename: str):
+
+    file = get_file(filename)
+
+    if file is None:
+
+        return {
+            "status": "error",
+            "message": "file not found"
+        }
+
+    return file
+
+# ----------------------------------
+# Delete File
+# ----------------------------------
+@app.delete("/files/{filename}")
+
+async def remove_file(filename: str):
+
+    return delete_file(filename)
+
+# ----------------------------------
+# Delete Files
+# ----------------------------------
+@app.delete("/files")
+
+async def remove_all_files():
+
+    return delete_all_files()
 
 # ----------------------------------
 # Version
