@@ -12,6 +12,7 @@ permissions:
 
 env:
   IMAGE_NAME: rubika-uploader
+  IMAGE_TAG: ${{ github.run_number }}
 
 jobs:
   docker:
@@ -29,8 +30,10 @@ jobs:
       - name: Build Image
         run: |
           docker build \
+            -t ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
             -t ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest .
 
       - name: Push Image
         run: |
+          docker push ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           docker push ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest

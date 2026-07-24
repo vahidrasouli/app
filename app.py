@@ -138,6 +138,22 @@ async def files():
     return list_files()
 
 # ----------------------------------
+# Version
+# ----------------------------------
+
+@app.get("/version")
+async def version():
+    return {
+        "version": "2026-07-24-v2",
+        "routes": [
+            "/",
+            "/health",
+            "/upload",
+            "/files"
+        ]
+    }
+
+# ----------------------------------
 # HTTP Exception
 # ----------------------------------
 
