@@ -49,8 +49,9 @@ async def download_file(url: str):
     )
 
     connector = aiohttp.TCPConnector(
-        ssl=True,
-        limit=100
+        limit=100,
+        ttl_dns_cache=300,
+        enable_cleanup_closed=True
     )
 
     logger.info(f"Download requested: {url}")
